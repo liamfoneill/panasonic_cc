@@ -27,7 +27,8 @@ const requireFromCwd = createRequire(`${process.cwd()}/package.json`);
 const { chromium } = requireFromCwd("playwright");
 
 const APP_CLIENT_ID = "Xmy6xIYIitMxngjB2rHvlm6HSDNnaMJx";
-const AUTH0_CLIENT = "eyJuYW1lIjoiYXV0aDAuanMtdWxwIiwidmVyc2lvbiI6IjkuMjMuMiJ9";
+const AUTH0_CLIENT =
+  "eyJuYW1lIjoiQXV0aDAuQW5kcm9pZCIsImVudiI6eyJhbmRyb2lkIjoiMzAifSwidmVyc2lvbiI6IjIuOS4zIn0=";
 const REDIRECT_URI =
   "panasonic-iot-cfc://authglb.digital.panasonic.com/android/com.panasonic.ACCsmart/callback";
 const BASE_PATH_AUTH = "https://authglb.digital.panasonic.com";
@@ -42,7 +43,7 @@ function randomString(length) {
     .slice(0, length);
 }
 
-function buildAuthorizeUrl(codeChallenge, state, nonce) {
+function buildAuthorizeUrl(codeChallenge, state) {
   const params = new URLSearchParams({
     scope: PANASONIC_OAUTH_SCOPE,
     audience: `https://digital.panasonic.com/${APP_CLIENT_ID}/api/v1/`,
@@ -52,9 +53,8 @@ function buildAuthorizeUrl(codeChallenge, state, nonce) {
     code_challenge_method: "S256",
     auth0Client: AUTH0_CLIENT,
     client_id: APP_CLIENT_ID,
-    redirect_uri: `${REDIRECT_URI}?lang=en`,
+    redirect_uri: REDIRECT_URI,
     state,
-    nonce,
   });
   return `${BASE_PATH_AUTH}/authorize?${params.toString()}`;
 }
@@ -109,8 +109,7 @@ async function main() {
     .update(codeVerifier)
     .digest("base64url");
   const state = randomString(20);
-  const nonce = randomString(20);
-  const authorizeUrl = buildAuthorizeUrl(codeChallenge, state, nonce);
+  const authorizeUrl = buildAuthorizeUrl(codeChallenge, state);
 
   let authCode;
   const browser = await chromium.launch({ headless: false });
