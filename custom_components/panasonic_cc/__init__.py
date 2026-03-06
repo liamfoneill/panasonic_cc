@@ -30,7 +30,9 @@ from .const import (
     STARTUP,
     DATA_COORDINATORS,
     ENERGY_COORDINATORS,
-    AQUAREA_COORDINATORS)
+    AQUAREA_COORDINATORS,
+    CONF_REFRESH_TOKEN,
+    PANASONIC_OAUTH_SCOPE)
 
 from .coordinator import PanasonicDeviceCoordinator, PanasonicDeviceEnergyCoordinator, AquareaDeviceCoordinator
 
@@ -78,10 +80,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     username = conf[CONF_USERNAME]
     password = conf[CONF_PASSWORD]
+    refresh_token = conf.get(CONF_REFRESH_TOKEN)
     enable_daily_energy_sensor = entry.options.get(CONF_ENABLE_DAILY_ENERGY_SENSOR, DEFAULT_ENABLE_DAILY_ENERGY_SENSOR)
     
     client = async_get_clientsession(hass)
     api = ApiClient(username, password, client)
+    if refresh_token:
+        await api._settings.is_ready()
+        api._settings.set_token(refresh_token=refresh_token, scope=PANASONIC_OAUTH_SCOPE)
     await api.start_session()
     devices = api.get_devices()
     

@@ -121,3 +121,5 @@ DEFAULT_DEVICE_FETCH_INTERVAL = 120
 DEFAULT_ENERGY_FETCH_INTERVAL = 300
 CONF_FORCE_ENABLE_NANOE = "force_enable_nanoe"
 DEFAULT_FORCE_ENABLE_NANOE = False
+CONF_REFRESH_TOKEN = "refresh_token"
+PANASONIC_OAUTH_SCOPE = "openid offline_access comfortcloud.control a2w.control"

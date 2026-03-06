@@ -7,6 +7,7 @@
         "data": {
           "username": "Panasonic ID",
           "password": "Password",
+          "refresh_token": "Refresh token (optional)",
           "enable_daily_energy_sensor": "Enable daily energy sensors",
           "force_enable_nanoe": "Enable Nanoe switch for all devices",
           "use_panasonic_preset_names": "Use 'Quiet' and 'Powerful' instead of 'Eco' and 'Boost' Presets",
@@ -19,7 +20,8 @@
         "description": "Enter your Panasonic ID and password to re-authenticate",
         "data": {
           "username": "Panasonic ID",
-          "password": "Password"
+          "password": "Password",
+          "refresh_token": "Refresh token (optional)"
         }
       }
     },
