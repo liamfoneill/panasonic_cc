@@ -123,3 +123,4 @@ CONF_FORCE_ENABLE_NANOE = "force_enable_nanoe"
 DEFAULT_FORCE_ENABLE_NANOE = False
 CONF_REFRESH_TOKEN = "refresh_token"
 PANASONIC_OAUTH_SCOPE = "openid offline_access comfortcloud.control a2w.control"
+PANASONIC_CLOUD_WORKING_APP_VERSION = "4.0.0"

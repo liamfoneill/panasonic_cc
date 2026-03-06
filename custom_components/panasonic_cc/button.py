@@ -45,7 +45,6 @@ async def async_setup_entry(hass: HomeAssistant, config, async_add_entities):
     energy_coordinators: list[PanasonicDeviceEnergyCoordinator] = hass.data[DOMAIN][ENERGY_COORDINATORS]
 
     for coordinator in data_coordinators:
-        entities.append(PanasonicButtonEntity(coordinator, APP_VERSION_DESCRIPTION))
         entities.append(CoordinatorUpdateButtonEntity(coordinator, UPDATE_DATA_DESCRIPTION))
     for coordinator in energy_coordinators:
         entities.append(CoordinatorUpdateButtonEntity(coordinator, UPDATE_ENERGY_DESCRIPTION))
@@ -84,4 +83,3 @@ class CoordinatorUpdateButtonEntity(PanasonicDataEntity, ButtonEntity):
     async def async_press(self) -> None:
         """Press the button."""
         await self.coordinator.async_request_refresh()
-

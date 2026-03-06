@@ -3,6 +3,7 @@ import logging
 from typing import Dict
 
 import asyncio
+from datetime import date
 
 import voluptuous as vol
 
@@ -32,7 +33,8 @@ from .const import (
     ENERGY_COORDINATORS,
     AQUAREA_COORDINATORS,
     CONF_REFRESH_TOKEN,
-    PANASONIC_OAUTH_SCOPE)
+    PANASONIC_OAUTH_SCOPE,
+    PANASONIC_CLOUD_WORKING_APP_VERSION)
 
 from .coordinator import PanasonicDeviceCoordinator, PanasonicDeviceEnergyCoordinator, AquareaDeviceCoordinator
 
@@ -83,10 +85,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     
     client = async_get_clientsession(hass)
     api = ApiClient(username, password, client)
+    await api._settings.is_ready()
+    api._settings._version = PANASONIC_CLOUD_WORKING_APP_VERSION
+    api._settings._versionDate = date.today()
     if refresh_token:
-        await api._settings.is_ready()
         api._settings.set_token(refresh_token=refresh_token, scope=PANASONIC_OAUTH_SCOPE)
         await api._authentication.refresh_token()
+        if api._settings.refresh_token and api._settings.refresh_token != refresh_token:
+            updated_config = dict(entry.data)
+            updated_config[CONF_REFRESH_TOKEN] = api._settings.refresh_token
+            hass.config_entries.async_update_entry(entry, data=updated_config)
+            conf = updated_config
         await api._authentication._retrieve_client_acc()
         await api._get_groups()
     else:
