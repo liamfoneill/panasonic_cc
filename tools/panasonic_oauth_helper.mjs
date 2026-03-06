@@ -17,11 +17,14 @@ redirect response, exchanges it for tokens, and optionally writes the refresh
 token payload to disk.
 */
 
-const crypto = require("node:crypto");
-const fs = require("node:fs/promises");
-const process = require("node:process");
-const readline = require("node:readline/promises");
-const { chromium } = require("playwright");
+import crypto from "node:crypto";
+import fs from "node:fs/promises";
+import { createRequire } from "node:module";
+import process from "node:process";
+import readline from "node:readline/promises";
+
+const requireFromCwd = createRequire(`${process.cwd()}/package.json`);
+const { chromium } = requireFromCwd("playwright");
 
 const APP_CLIENT_ID = "Xmy6xIYIitMxngjB2rHvlm6HSDNnaMJx";
 const AUTH0_CLIENT = "eyJuYW1lIjoiYXV0aDAuanMtdWxwIiwidmVyc2lvbiI6IjkuMjMuMiJ9";

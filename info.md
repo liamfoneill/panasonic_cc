@@ -1,6 +1,6 @@
 # Panasonic Comfort Cloud
 
-This is a custom component to allow control of Panasonic Comfort Cloud devices in [HomeAssistant](https://home-assistant.io).
+Custom Home Assistant integration for Panasonic Comfort Cloud devices.
 
 <p>
     <img src="https://github.com/sockless-coding/panasonic_cc/raw/master/doc/controls.png" alt="Example controls" style="vertical-align: top;max-width:100%" align="top" />
@@ -8,31 +8,21 @@ This is a custom component to allow control of Panasonic Comfort Cloud devices i
     <img src="https://github.com/sockless-coding/panasonic_cc/raw/master/doc/diagnostics.png" alt="Example diagnostics" style="vertical-align: top;max-width:100%" align="top" />
 </p>
 
-## IMPORTANT
-Before installing this integration, you **must** have **completed** the **2FA** process using the Panasonic Comfort Cloud app.
+## Important
 
-# Features:
+Panasonic changed the upstream authentication flow. The recommended setup now uses a Panasonic OAuth `refresh_token` instead of relying on direct Panasonic ID and password login.
 
-* Climate component for Panasonic airconditioners and heatpumps
-* Horizontal swing mode selection
-* Sensors for inside and outside temperature (where available)
-* Switch for toggling Nanoe mode (where available)
-* Switch for toggling ECONAVI mode (where available)
-* Switch for toggling AI ECO mode (where available)
-* Daily energy sensor (optional)
-* Current Power sensor (Calculated from energy reading)
-* Zone controls (where available)
+This repository includes a helper script at `tools/panasonic_oauth_helper.mjs` that opens the Panasonic login page in a browser, captures the OAuth code, and exchanges it for a refresh token.
 
+## Setup summary
 
-# Configuration
+1. Install the integration.
+2. Run the helper script to generate a refresh token.
+3. Add or reconfigure the integration in Home Assistant.
+4. Paste the `refresh_token` into the config flow.
 
-The Panasonic Comfort Cloud integration can be configured via the Home Assistant integration interface where it will let you enter your Panasonic ID and Password.
-
-![Setup](https://github.com/sockless-coding/panasonic_cc/raw/master/doc/setup.png)
-
-After inital setup, the following options are available:
-
-![Setup](https://github.com/sockless-coding/panasonic_cc/raw/master/doc/configuration.png)
+Username and password fields are still available as optional fallback fields, but the refresh token is the preferred authentication method.
 
 #### Support Development
-- :coffee:&nbsp;&nbsp;[Buy me a coffee](https://www.buymeacoffee.com/sockless)
+
+- [Buy me a coffee](https://www.buymeacoffee.com/sockless)

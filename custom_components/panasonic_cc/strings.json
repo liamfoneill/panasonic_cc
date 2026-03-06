@@ -3,11 +3,11 @@
     "step": {
       "user": {
         "title": "Panasonic Comfort Cloud",
-        "description": "Enter your Panasonic ID and password",
+        "description": "Enter a refresh token to use Panasonic's current OAuth flow. Username and password are optional fallback fields.",
         "data": {
           "username": "Panasonic ID",
           "password": "Password",
-          "refresh_token": "Refresh token (optional)",
+          "refresh_token": "Refresh token",
           "enable_daily_energy_sensor": "Enable daily energy sensors",
           "force_enable_nanoe": "Enable Nanoe switch for all devices",
           "use_panasonic_preset_names": "Use 'Quiet' and 'Powerful' instead of 'Eco' and 'Boost' Presets",
@@ -17,11 +17,11 @@
       },
       "reconfigure_confirm": {
         "title": "Reconfigure Panasonic Comfort Cloud",
-        "description": "Enter your Panasonic ID and password to re-authenticate",
+        "description": "Update the stored Panasonic authentication details. A refresh token is the preferred option.",
         "data": {
           "username": "Panasonic ID",
           "password": "Password",
-          "refresh_token": "Refresh token (optional)"
+          "refresh_token": "Refresh token"
         }
       }
     },
@@ -29,13 +29,17 @@
       "no_devices": "No devices found. Please check your the account and CFC app and try again.",
       "device_timeout": "Timeout connecting to the API.",
       "device_fail": "Unexpected error connecting to the API.",
-      "invalid_user_password": "Invalid Panasonic ID or password."
+      "invalid_user_password": "Invalid Panasonic ID or password.",
+      "invalid_refresh_token": "The stored refresh token is invalid or expired. Generate a new token and try again.",
+      "missing_auth": "Enter either a refresh token or both Panasonic ID and password.",
+      "terms_updated": "Panasonic requires updated terms or policies to be accepted. Sign in via the official app or helper flow, accept the prompts, then try again."
     },
     "abort": {
       "device_timeout": "Timeout connecting to the device.",
       "device_fail": "Unexpected error creating device.",
       "already_configured": "Device is already configured",
-      "reauth_successful": "Re-authentication successful."
+      "reauth_successful": "Re-authentication successful.",
+      "terms_updated": "Panasonic requires updated terms or policies to be accepted before this integration can continue."
     }
   },
   "options": {

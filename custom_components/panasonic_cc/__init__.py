@@ -72,8 +72,6 @@ async def async_setup(hass: HomeAssistant, config: Dict) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Establish connection with Comfort Cloud."""
-    
-
     conf = entry.data
     if PANASONIC_DEVICES not in hass.data:
         hass.data[PANASONIC_DEVICES] = []
@@ -88,7 +86,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     if refresh_token:
         await api._settings.is_ready()
         api._settings.set_token(refresh_token=refresh_token, scope=PANASONIC_OAUTH_SCOPE)
-    await api.start_session()
+        await api._authentication.refresh_token()
+        await api._authentication._retrieve_client_acc()
+        await api._get_groups()
+    else:
+        await api.start_session()
     devices = api.get_devices()
     
     if CONF_UPDATE_INTERVAL_VERSION not in conf or conf[CONF_UPDATE_INTERVAL_VERSION] < 2:
