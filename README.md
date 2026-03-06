@@ -15,6 +15,8 @@ Custom Home Assistant integration for Panasonic Comfort Cloud air conditioners, 
 > 2. Paste that token into the integration config flow in Home Assistant.
 >
 > Username and password fields remain available as fallback fields, but the refresh token is the primary authentication method now.
+>
+> Panasonic also currently rejects newer advertised app versions on the Comfort Cloud API. This integration therefore pins a known-working Panasonic app version internally.
 
 <p>
     <img src="https://github.com/sockless-coding/panasonic_cc/raw/master/doc/controls.png" alt="Example controls" style="vertical-align: top;max-width:100%" align="top" />
@@ -85,7 +87,9 @@ node /Users/Liam/Developer/GitHub/panasonic_cc/tools/panasonic_oauth_helper.mjs 
 
 Use only the `refresh_token`. Do not paste the `access_token` or `id_token` into Home Assistant.
 
-### If the token expires
+### Token rotation and expiry
+
+Panasonic rotates refresh tokens when they are used. This integration now stores the rotated token back into the Home Assistant config entry automatically.
 
 If Panasonic revokes or expires the refresh token, the integration will stop authenticating. Run the helper again to generate a fresh token, then reconfigure the integration with the new value.
 
@@ -108,6 +112,17 @@ After the initial setup, the following options are available:
 - Panasonic's legacy username/password login flow is unreliable due to upstream authentication changes.
 - Refresh tokens are currently the stable authentication path.
 - If the refresh token expires or is revoked, it must be regenerated with the helper script.
+- Panasonic currently rejects newer advertised app versions for Comfort Cloud API access. This integration pins a known-working app version until Panasonic changes server behavior again.
+
+## Troubleshooting
+
+- If setup fails with `401` and Panasonic error code `4103`, do not assume it literally means you still need to accept terms in the mobile app.
+- Panasonic currently also returns `4103` when the client advertises an app version the service rejects.
+- This integration works around that by pinning a known-working Panasonic app version internally.
+- If authentication breaks again in the future, the most likely causes are:
+  - Panasonic changed the accepted app version again
+  - Panasonic changed the OAuth flow again
+  - Your stored refresh token was rotated, revoked, or expired
 
 ## Dependencies
 

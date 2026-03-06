@@ -14,6 +14,8 @@ Panasonic changed the upstream authentication flow. The recommended setup now us
 
 This repository includes a helper script at `tools/panasonic_oauth_helper.mjs` that opens the Panasonic login page in a browser, captures the OAuth code, and exchanges it for a refresh token.
 
+Panasonic also currently rejects newer advertised app versions on the Comfort Cloud API. This integration pins a known-working app version internally and persists rotated refresh tokens automatically.
+
 ## Setup summary
 
 1. Install the integration.

@@ -1,7 +1,6 @@
 """Config flow for the Panasonic Comfort Cloud platform."""
 import asyncio
 import logging
-from datetime import date
 from typing import Any, Dict, Optional, Mapping
 
 import voluptuous as vol
@@ -26,16 +25,10 @@ from .const import (
     CONF_FORCE_ENABLE_NANOE,
     DEFAULT_FORCE_ENABLE_NANOE,
     CONF_REFRESH_TOKEN,
-    PANASONIC_OAUTH_SCOPE,
-    PANASONIC_CLOUD_WORKING_APP_VERSION)
+    PANASONIC_OAUTH_SCOPE)
+from .panasonic_api import prepare_api_client
 
 _LOGGER = logging.getLogger(__name__)
-
-
-def _apply_working_app_version(api: ApiClient) -> None:
-    """Force the last app version known to work with Panasonic's API."""
-    api._settings._version = PANASONIC_CLOUD_WORKING_APP_VERSION
-    api._settings._versionDate = date.today()
 
 
 class FlowHandler(config_entries.ConfigFlow, domain=PANASONIC_DOMAIN):
@@ -118,8 +111,7 @@ class FlowHandler(config_entries.ConfigFlow, domain=PANASONIC_DOMAIN):
         try:
             client = async_get_clientsession(self.hass)
             api = ApiClient(username, password, client)
-            await api._settings.is_ready()
-            _apply_working_app_version(api)
+            await prepare_api_client(api)
             if refresh_token:
                 api._settings.set_token(refresh_token=refresh_token, scope=PANASONIC_OAUTH_SCOPE)
                 await api._authentication.refresh_token()
@@ -246,8 +238,7 @@ class FlowHandler(config_entries.ConfigFlow, domain=PANASONIC_DOMAIN):
         if errors:
             return errors
         api = ApiClient(username, password, client)
-        await api._settings.is_ready()
-        _apply_working_app_version(api)
+        await prepare_api_client(api)
         try:
             if refresh_token:
                 api._settings.set_token(refresh_token=refresh_token, scope=PANASONIC_OAUTH_SCOPE)
